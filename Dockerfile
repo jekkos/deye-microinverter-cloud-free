@@ -2,14 +2,14 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files first for better layer caching
-COPY package.json package-lock.json ./
+# Copy package files from dummycloud/
+COPY dummycloud/package.json dummycloud/package-lock.json ./
 
 # Install dependencies
 RUN npm ci --only=production && npm cache clean --force
 
-# Copy application code
-COPY . .
+# Copy application code from dummycloud/
+COPY dummycloud/. ./
 
 # Set environment variables with defaults
 ENV LOGLEVEL="info"
