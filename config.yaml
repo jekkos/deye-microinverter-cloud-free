@@ -8,7 +8,7 @@ arch:
   - amd64
 startup: services
 homeassistant: 2024.1.0
-image: ds920:5001/deye-dummycloud-node
+image: jekkos/deye-dummycloud-node
 host_network: true
 ports:
   10000/tcp: 10000
