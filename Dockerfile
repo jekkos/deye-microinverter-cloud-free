@@ -1,4 +1,6 @@
-FROM ghcr.io/home-assistant/base:3.24
+FROM --platform=$BUILDPLATFORM ghcr.io/home-assistant/base:3.24
+
+ARG TARGETARCH
 
 # Install Node.js and npm
 RUN apk add --no-cache nodejs npm
