@@ -2,15 +2,14 @@ name: Build and Publish Docker Image
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   workflow_dispatch:
 
 jobs:
-  build:
+  docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up QEMU
@@ -25,14 +24,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Extract version from config.yaml
+        id: version
+        run: |
+          pip install pyyaml
+          VERSION=$(python3 -c "import yaml; print(yaml.safe_load(open('config.yaml'))['version'])")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/arm/v7,linux/arm64,linux/amd64
+          platforms: linux/amd64,linux/aarch64,linux/armv7
           push: true
           tags: |
             jekkos/deye-dummycloud-node:latest
-            jekkos/deye-dummycloud-node:${{ github.sha }}
+            jekkos/deye-dummycloud-node:${{ steps.version.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

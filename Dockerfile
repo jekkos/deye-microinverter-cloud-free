@@ -1,4 +1,7 @@
-FROM node:20-alpine
+FROM ghcr.io/home-assistant/base:3.24
+
+# Install Node.js and npm
+RUN apk add --no-cache nodejs npm
 
 WORKDIR /app
 
@@ -11,11 +14,10 @@ RUN npm ci --only=production && npm cache clean --force
 # Copy application code from dummycloud/
 COPY dummycloud/. ./
 
-# Set environment variables with defaults
-ENV LOGLEVEL="info"
-ENV MQTT_BROKER_URL="mqtt://127.0.0.1:1883"
+# Copy run script
+COPY run.sh /
+RUN chmod a+x /run.sh
 
-# Expose TCP port for logger connections
 EXPOSE 10000
 
-CMD ["npm", "start"]
+CMD [ "/run.sh" ]
