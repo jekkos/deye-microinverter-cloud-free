@@ -1,0 +1,6 @@
+{
+  "name": "Deye Dummy Cloud",
+  "description": "Local replacement for the Deye/Solarman cloud for microinverter loggers",
+  "url": "https://github.com/jekkos/deye-microinverter-cloud-free",
+  "maintainer": "jekkos"
+}
